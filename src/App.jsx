@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { HashRouter, Routes, Route } from "react-router-dom";
 
 import IntroPage from "./pages/IntroPage";
 import StoryChoice from "./pages/StoryChoice";
@@ -11,24 +11,29 @@ function App() {
     const storedKey = sessionStorage.getItem("openaiKey");
 
     if (!storedKey) {
-      const input = prompt("請輸入 OpenAI API 金鑰（測試用）：");
-      if (input?.startsWith("sk-")) {
-        sessionStorage.setItem("openaiKey", input);
+      const envKey = import.meta.env.VITE_OPENAI_API_KEY;
+      if (envKey?.startsWith("sk-")) {
+        sessionStorage.setItem("openaiKey", envKey);
       } else {
-        alert("⚠️ 未輸入有效的 OpenAI Key，可能無法正常對話");
+        const input = prompt("請輸入 OpenAI API 金鑰（測試用）：");
+        if (input?.startsWith("sk-")) {
+          sessionStorage.setItem("openaiKey", input);
+        } else {
+          alert("⚠️ 未輸入有效的 OpenAI Key，可能無法正常對話");
+        }
       }
     }
   }, []);
 
   return (
-    <BrowserRouter>
+    <HashRouter>
       <Routes>
         <Route path="/" element={<IntroPage />} />
         <Route path="/story" element={<StoryChoice />} />
         <Route path="/chat" element={<ChatRoom />} />
         <Route path="/end" element={<FinalMessage />} />
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   );
 }
 
