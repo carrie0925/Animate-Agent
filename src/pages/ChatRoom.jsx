@@ -1,8 +1,9 @@
 // src/pages/ChatRoom.jsx
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import DialogueBox from "../components/DialogueBox";
 import ProgressBar from "../components/ProgressBar";
-import { useNavigate } from "react-router-dom";
+import { fetchCharacterReply } from "../utils/chatAPI";
 
 function ChatRoom() {
   const [messages, setMessages] = useState([]);
@@ -10,25 +11,27 @@ function ChatRoom() {
   const navigate = useNavigate();
   const totalSteps = 5;
 
-  const handleUserMessage = (userInput) => {
+  const handleUserMessage = async (userInput) => {
     const newMessages = [...messages, { role: "user", content: userInput }];
+    setMessages(newMessages);
 
-    // ⛳️ 模擬角色回應
-    const fakeReply = {
-      role: "assistant",
-      content: `（模擬回應）我理解你的感受，謝謝你願意說出來。`,
-    };
+    const apiKey = sessionStorage.getItem("openaiKey");
+    if (!apiKey) {
+      alert("請先設定 OpenAI API 金鑰！");
+      return;
+    }
 
-    setMessages([...newMessages, fakeReply]);
+    const assistantReply = await fetchCharacterReply(newMessages, apiKey);
+    const updated = [
+      ...newMessages,
+      { role: "assistant", content: assistantReply },
+    ];
+    setMessages(updated);
 
     if (step < totalSteps) {
       setStep(step + 1);
     } else {
-      // 🧠 對話結束，前往總結頁
-      sessionStorage.setItem(
-        "chatMessages",
-        JSON.stringify([...newMessages, fakeReply])
-      );
+      sessionStorage.setItem("chatMessages", JSON.stringify(updated));
       navigate("/end");
     }
   };
