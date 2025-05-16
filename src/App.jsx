@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import IntroPage from "./pages/IntroPage";
-import StoryChoice from "./pages/storyChoice";
+import StoryChoice from "./pages/StoryChoice";
 import ChatRoom from "./pages/ChatRoom";
 import FinalMessage from "./pages/FinalMessage";
 
