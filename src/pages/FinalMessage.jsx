@@ -7,6 +7,7 @@ import { generateSummaryPrompt } from "../utils/summaryPrompt";
 function FinalMessage() {
   const [summary, setSummary] = useState("產生中...");
   const navigate = useNavigate();
+  const characterName = sessionStorage.getItem("characterName") || "這位角色";
 
   useEffect(() => {
     const messages = JSON.parse(sessionStorage.getItem("chatMessages") || "[]");
@@ -19,7 +20,6 @@ function FinalMessage() {
     }
 
     const prompt = generateSummaryPrompt(messages, characterId);
-
     fetchCharacterReply(prompt, apiKey).then((res) => {
       setSummary(res);
     });
@@ -27,7 +27,7 @@ function FinalMessage() {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-4 text-center">
-      <h1 className="text-2xl font-bold mb-4">來自角色的鼓勵語</h1>
+      <h1 className="text-2xl font-bold mb-4">{characterName}想送給你的話</h1>
       <p className="text-lg bg-indigo-50 border rounded-xl p-6 max-w-xl shadow">
         {summary}
       </p>

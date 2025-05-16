@@ -18,8 +18,15 @@ function StoryChoice() {
       return;
     }
 
-    const result = classifyUser([answers.q1, answers.q2, answers.q3]);
-    sessionStorage.setItem("characterId", result);
+    // 假設 classifyUser 回傳格式為 { characterId: "simmel", characterName: "辛梅爾" }
+    const { characterId, characterName } = classifyUser([
+      answers.q1,
+      answers.q2,
+      answers.q3,
+    ]);
+
+    sessionStorage.setItem("characterId", characterId);
+    sessionStorage.setItem("characterName", characterName);
     navigate("/chat");
   };
 

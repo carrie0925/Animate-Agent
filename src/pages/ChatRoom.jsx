@@ -1,5 +1,5 @@
 // src/pages/ChatRoom.jsx
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import DialogueBox from "../components/DialogueBox";
 import ProgressBar from "../components/ProgressBar";
@@ -11,17 +11,21 @@ function ChatRoom() {
   const navigate = useNavigate();
   const totalSteps = 5;
 
+  const characterId = sessionStorage.getItem("characterId");
+  const characterName = sessionStorage.getItem("characterName");
+
+  useEffect(() => {
+    if (!characterId || !characterName) {
+      alert("請先回答問題來配對角色！");
+      navigate("/");
+    }
+  }, [characterId, characterName, navigate]);
+
   const handleUserMessage = async (userInput) => {
     const newMessages = [...messages, { role: "user", content: userInput }];
     setMessages(newMessages);
 
-    const apiKey = sessionStorage.getItem("openaiKey");
-    if (!apiKey) {
-      alert("請先設定 OpenAI API 金鑰！");
-      return;
-    }
-
-    const assistantReply = await fetchCharacterReply(newMessages, apiKey);
+    const assistantReply = await fetchCharacterReply(newMessages);
     const updated = [
       ...newMessages,
       { role: "assistant", content: assistantReply },
@@ -38,6 +42,9 @@ function ChatRoom() {
 
   return (
     <div className="min-h-screen p-4 pb-10">
+      <h2 className="text-xl font-semibold mb-4">
+        {characterName} 正在與你對話中
+      </h2>
       <DialogueBox messages={messages} onSend={handleUserMessage} />
       <ProgressBar step={step} total={totalSteps} />
     </div>

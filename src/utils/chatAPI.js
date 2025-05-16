@@ -1,21 +1,28 @@
 // src/utils/chatAPI.js
 
 const OPENAI_API_URL = "https://api.openai.com/v1/chat/completions";
-const MODEL = "gpt-3.5-turbo"; // 正確的 model 名稱
+const MODEL = "gpt-3.5-turbo";
 
-export async function fetchCharacterReply(messages, apiKey) {
+// 系統提示（讓 GPT 輸出繁體字）
+const systemPrompt = {
+  role: "system",
+  content: "請用繁體中文回答接下來的所有問題。",
+};
+
+export async function fetchCharacterReply(messages) {
   try {
-    const trimmed = messages.slice(-10); // 保留最後 10 則對話
+    const trimmed = messages.slice(-10); // 最多取 10 則
+    const finalMessages = [systemPrompt, ...trimmed];
 
     const res = await fetch(OPENAI_API_URL, {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${apiKey}`,
+        Authorization: `Bearer ${import.meta.env.VITE_OPENAI_API_KEY}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
         model: MODEL,
-        messages: trimmed,
+        messages: finalMessages,
         temperature: 0.8,
       }),
     });

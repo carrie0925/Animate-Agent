@@ -11,7 +11,7 @@ export function generateSummaryPrompt(messages, characterName = "角色") {
   return [
     {
       role: "system",
-      content: `你是一位溫柔且具啟發性的動畫角色，擅長用一句鼓勵話語總結與使用者的對話。`,
+      content: `你是一位溫柔且具啟發性的動畫角色，請使用繁體中文回答接下來的問題，擅長用一句鼓勵話語總結與使用者的對話。`,
     },
     {
       role: "user",
