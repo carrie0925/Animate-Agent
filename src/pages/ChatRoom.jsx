@@ -13,6 +13,8 @@ function ChatRoom() {
 
   const characterId = sessionStorage.getItem("characterId");
   const characterName = sessionStorage.getItem("characterName");
+  const characterIntro = sessionStorage.getItem("characterIntro");
+  const characterAvatar = sessionStorage.getItem("characterAvatar");
 
   useEffect(() => {
     if (!characterId || !characterName) {
@@ -41,11 +43,24 @@ function ChatRoom() {
   };
 
   return (
-    <div className="min-h-screen p-4 pb-10">
-      <h2 className="text-xl font-semibold mb-4">
-        {characterName} 正在與你對話中
-      </h2>
+    <div className="min-h-screen bg-gray-50 p-4 pb-20">
+      {/* 角色介紹卡 */}
+      <div className="flex items-center gap-4 mb-4 bg-white shadow rounded-xl p-4">
+        <img
+          src={characterAvatar || "/default-avatar.png"}
+          alt="角色頭像"
+          className="w-16 h-16 rounded-full border"
+        />
+        <div>
+          <h2 className="text-xl font-bold text-indigo-700">{characterName}</h2>
+          <p className="text-sm text-gray-600">{characterIntro}</p>
+        </div>
+      </div>
+
+      {/* 對話框區塊 */}
       <DialogueBox messages={messages} onSend={handleUserMessage} />
+
+      {/* 進度條 */}
       <ProgressBar step={step} total={totalSteps} />
     </div>
   );

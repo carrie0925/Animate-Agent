@@ -1,0 +1,12 @@
+/* src/index.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+/* 測試 tailwind class 是否出現在 dev build 中 */
+.test-color {
+  @apply bg-red-500 text-white p-4 rounded-xl;
+}
+/* src/index.css */
+.red-box {
+  @apply bg-red-500 text-white p-6 rounded-xl shadow-lg;
+}
