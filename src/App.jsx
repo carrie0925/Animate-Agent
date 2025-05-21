@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { HashRouter, Routes, Route } from "react-router-dom";
 
 import IntroPage from "./pages/IntroPage";
-import StoryChoice from "./pages/StoryChoice";
+import StoryFlow from "./pages/StoryFlow";
 import ChatRoom from "./pages/ChatRoom";
 import FinalMessage from "./pages/FinalMessage";
 
@@ -29,8 +29,8 @@ function App() {
     <HashRouter>
       <Routes>
         <Route path="/" element={<IntroPage />} />
-        <Route path="/story" element={<StoryChoice />} />
-        <Route path="/chat" element={<ChatRoom />} />
+        <Route path="/story" element={<StoryFlow />} />
+        <Route path="/chat" element={<ChatRoom />} />{" "}
         <Route path="/end" element={<FinalMessage />} />
       </Routes>
     </HashRouter>

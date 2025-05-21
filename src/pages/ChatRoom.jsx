@@ -70,8 +70,8 @@ function ChatRoom() {
         </div>
       </div>
 
-      {/* 聊天區與輸入框 */}
-      <div className="flex-1 overflow-hidden">
+      {/* 對話區與輸入框 */}
+      <div className="flex-1 overflow-hidden flex flex-col">
         <DialogueBox messages={messages} onSend={handleUserMessage} />
       </div>
 
