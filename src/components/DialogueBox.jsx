@@ -19,7 +19,7 @@ function DialogueBox({ messages, onSend }) {
   }, [messages]);
 
   return (
-    <div className="flex flex-col h-[calc(100vh-180px)] overflow-hidden">
+    <div className="flex flex-col flex-1 overflow-hidden">
       {/* 訊息顯示區 */}
       <div className="flex-1 overflow-y-auto px-6 py-4 space-y-4">
         {messages.map((msg, idx) => (
@@ -45,9 +45,9 @@ function DialogueBox({ messages, onSend }) {
       </div>
 
       {/* 輸入欄區 */}
-      <div className="flex items-center gap-2 p-4 bg-transparent">
+      <div className="flex items-center gap-2 p-4">
         <input
-          className="flex-1 rounded-full px-4 py-2 text-gray-900 bg-white placeholder-gray-400 focus:outline-none"
+          className="flex-1 rounded-xl px-4 py-2 text-gray-900 bg-white placeholder-gray-400 focus:outline-none"
           placeholder="請輸入訊息..."
           value={input}
           onChange={(e) => setInput(e.target.value)}
