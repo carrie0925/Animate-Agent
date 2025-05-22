@@ -23,8 +23,21 @@ function ChatRoom() {
   }, [characterId, characterName, navigate]);
 
   const handleUserMessage = async (userInput) => {
-    const newMessages = [...messages, { role: "user", content: userInput }];
-    setMessages(newMessages);
+    const round = step;
+    const backstory =
+      sessionStorage.getItem("character_backstory")?.split("。") || [];
+
+    let storyInsert = "";
+    if ((round === 2 || round === 4) && backstory.length >= round - 2) {
+      storyInsert = `（你可以適當分享這段你的經歷作為例子：「${
+        backstory[round - 2]
+      }。」）`;
+    }
+
+    const prompt = `使用者說：「${userInput}」請依照 ${characterName} 的風格回應。${storyInsert}`;
+    const newMessages = [...messages, { role: "user", content: prompt }];
+
+    setMessages([...messages, { role: "user", content: userInput }]); // 顯示原始內容
 
     const apiKey = sessionStorage.getItem("openaiKey");
     if (!apiKey) {
@@ -34,7 +47,8 @@ function ChatRoom() {
 
     const assistantReply = await fetchCharacterReply(newMessages, apiKey);
     const updated = [
-      ...newMessages,
+      ...messages,
+      { role: "user", content: userInput },
       { role: "assistant", content: assistantReply },
     ];
     setMessages(updated);

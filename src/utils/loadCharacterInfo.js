@@ -1,3 +1,6 @@
+// src/utils/loadCharacterInfo.js
+import { generateSystemPrompt } from "./generateSystemPrompt.js";
+
 export async function loadCharacterInfo(characterId) {
   const res = await fetch(`${import.meta.env.BASE_URL}characters.json`);
   if (!res.ok) throw new Error("角色資料載入失敗");
@@ -13,9 +16,12 @@ export async function loadCharacterInfo(characterId) {
     ""
   )}`;
 
-  for (const key in character) {
-    sessionStorage.setItem(`character_${key}`, character[key]);
-  }
+  // 存入 sessionStorage
+  sessionStorage.setItem("character_character_id", character.character_id);
+  sessionStorage.setItem("character_name", character.name);
+  sessionStorage.setItem("character_avatar", character.avatar);
+  sessionStorage.setItem("character_personality", character.personality);
+  sessionStorage.setItem("character_backstory", character.backstory);
 
   return character;
 }
