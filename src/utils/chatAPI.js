@@ -1,7 +1,9 @@
 // src/utils/chatAPI.js
 
+import { generateSystemPrompt } from "./generateSystemPrompt";
+
 const OPENAI_API_URL = "https://api.openai.com/v1/chat/completions";
-const MODEL = "gpt-3.5-turbo";
+const MODEL = "gpt-4o"; // 最新模型
 
 export async function fetchCharacterReply(messages, apiKey) {
   try {
@@ -10,19 +12,43 @@ export async function fetchCharacterReply(messages, apiKey) {
       name: sessionStorage.getItem("character_name"),
       tone: sessionStorage.getItem("character_tone"),
       dialogue_style: sessionStorage.getItem("character_dialogue_style"),
+      personality: sessionStorage.getItem("character_personality"),
+      example_openings: JSON.parse(
+        sessionStorage.getItem("character_example_openings") || "[]"
+      ),
+      sample_questions: JSON.parse(
+        sessionStorage.getItem("character_sample_questions") || "[]"
+      ),
+      final_encouragement: sessionStorage.getItem(
+        "character_final_encouragement"
+      ),
+      backstory: sessionStorage.getItem("character_backstory"),
+      story_trigger_keywords: JSON.parse(
+        sessionStorage.getItem("character_story_trigger_keywords") || "[]"
+      ),
+      story_trigger_response: sessionStorage.getItem(
+        "character_story_trigger_response"
+      ),
       source: sessionStorage.getItem("character_source") || "某部動畫",
     };
 
-    // 建立角色化的 system prompt
+    const lastUserMessage = messages[messages.length - 1]?.content || "";
+    const triggers = character.story_trigger_keywords || [];
+
+    // ✅ 若最後訊息符合 trigger，強制回應設定的故事
+    const matchedTrigger = triggers.find((keyword) =>
+      lastUserMessage.includes(keyword)
+    );
+    if (matchedTrigger && character.story_trigger_response) {
+      return character.story_trigger_response;
+    }
+
+    // ⬇️ 正常系統 prompt 對話流程
     const systemPrompt = {
       role: "system",
-      content: `你現在是一位動畫角色「${character.name}」，來自作品《${character.source}》。
-你說話的語氣是：「${character.tone}」，互動風格是：「${character.dialogue_style}」。
-請用繁體中文自然地與使用者對話，像你自己在說話一樣，不要像 AI 助理。
-請避免過於機械的語氣，務必融入角色性格與表達風格。`,
+      content: generateSystemPrompt(character),
     };
 
-    // 最多保留 10 則訊息對話
     const trimmedMessages = messages.slice(-10);
     const finalMessages = [systemPrompt, ...trimmedMessages];
 
