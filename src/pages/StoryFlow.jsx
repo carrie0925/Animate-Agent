@@ -18,7 +18,7 @@ function StoryFlow() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const timer = setTimeout(() => setStep(0), 7500); // 開場動畫停留 3 秒
+    const timer = setTimeout(() => setStep(0), 6500); // 開場動畫停留 3 秒
     return () => clearTimeout(timer);
   }, []);
 
