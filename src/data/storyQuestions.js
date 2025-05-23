@@ -2,32 +2,62 @@
 export const storyQuestions = [
   {
     id: "q1",
-    question: "當你踏上『忘憂星球』，心裡最渴望聽見的第一句話，會是什麼呢？",
+    question:
+      "你在漫長的流星雨中墜落，一身塵土地醒來。面前，是四道發著微光的小徑。這時，一位神祕旅人走向你，低聲問道：\n<span class='font-semibold text-indigo-900'>「你現在最想踏進哪一條路？」</span>",
     options: [
-      { label: "先休息一下吧，有我陪你。", value: "comfort" },
-      { label: "我們一起想辦法突破它。", value: "action" },
-      { label: "你願意說說看，發生什麼事情嗎？", value: "listen" },
-      { label: "來，先做點有趣的事轉換心情～", value: "fun" },
+      {
+        label: " 🛖 通往湖畔木屋的路，感覺那裡會有篝火與溫暖的擁抱",
+        value: "comfort",
+      },
+      {
+        label: " 🏔 那條直達山頂的路，看起來雖然有挑戰性但能眺望遠方",
+        value: "action",
+      },
+      {
+        label: " 🍃 森林深處那條青苔小路，或許有人在那等待聆聽",
+        value: "listen",
+      },
+      {
+        label: " 🎠 咦，竟然有旋轉木馬？那條通往遊樂場的路看起來好有趣！",
+        value: "fun",
+      },
     ],
   },
   {
     id: "q2",
-    question: "當你開始說出內心感受時，你比較希望對方怎麼回應？",
+    question:
+      "經過長路，你來到一條閃著藍銀光芒的月光河。渡船夫說：「你只能渡過這條河一次，會帶你到一個能稍作停留的空間。」\n<span class='font-semibold text-indigo-900'>「你會選擇哪種交通工具？」</span>",
     options: [
-      { label: "我懂你，我會一直聽著。", value: "empathy" },
-      { label: "你很勇敢，這一步踏出得很棒。", value: "encourage" },
-      { label: "我們一步步來，釐清所有感覺。", value: "analyze" },
-      { label: "你現在的情緒是什麼形狀呀？", value: "metaphor" },
+      {
+        label: " ⛵️ 木槳船，有位熟悉的人靜靜坐在我身邊，傾聽我說話且不打斷",
+        value: "empathy",
+      },
+      {
+        label: " 🛶 小舟，船身刻著：『你很勇敢』，有人幫我握著舵",
+        value: "encourage",
+      },
+      {
+        label: " 🛥 水上研究艙，有指南和日誌，讓我慢慢分析這趟旅程的起點和終點",
+        value: "analyze",
+      },
+      {
+        label: " 🎈 一艘漂浮的夢幻熱氣球，我會以畫或比喻說出這趟旅程的感受",
+        value: "metaphor",
+      },
     ],
   },
   {
     id: "q3",
-    question: "你希望從這段對話中獲得什麼？",
+    question:
+      "渡過河之後，你抵達一座懸浮島，突然有神秘旅人又出現在你面前。他說，每個人都會從這趟星球旅行帶走一個禮物。\n<span class='font-semibold text-indigo-900'>「你希望自己在這趟旅程中，獲得什麼？」</span>",
     options: [
-      { label: "有人理解你、接住你", value: "care" },
-      { label: "有力量重新出發", value: "power" },
-      { label: "把亂糟糟的情緒整理清楚", value: "clarity" },
-      { label: "找回你為什麼想努力的那份心", value: "dream" },
+      { label: " 🫂 一份無須解釋的理解與陪伴", value: "care" },
+      { label: " 🔥 重新燃起的力量與希望", value: "power" },
+      { label: " 🧩 讓心裡那團亂麻，終於慢慢釐清的安定", value: "clarity" },
+      {
+        label: " 🎇 回憶起自己真正渴望的是什麼，那份純真的初衷",
+        value: "dream",
+      },
     ],
   },
 ];

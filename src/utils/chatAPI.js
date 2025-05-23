@@ -32,17 +32,6 @@ export async function fetchCharacterReply(messages, apiKey) {
       source: sessionStorage.getItem("character_source") || "某部動畫",
     };
 
-    const lastUserMessage = messages[messages.length - 1]?.content || "";
-    const triggers = character.story_trigger_keywords || [];
-
-    // ✅ 若最後訊息符合 trigger，強制回應設定的故事
-    const matchedTrigger = triggers.find((keyword) =>
-      lastUserMessage.includes(keyword)
-    );
-    if (matchedTrigger && character.story_trigger_response) {
-      return character.story_trigger_response;
-    }
-
     // ⬇️ 正常系統 prompt 對話流程
     const systemPrompt = {
       role: "system",
