@@ -30,6 +30,15 @@ function StoryFlow() {
       const charId = classifyByStory(updated);
       loadCharacterInfo(charId).then((char) => {
         setCharacter(char);
+
+        sessionStorage.setItem(
+          "character_story_trigger_keywords",
+          JSON.stringify(char.story_trigger_keywords)
+        );
+        sessionStorage.setItem(
+          "character_story_trigger_response",
+          char.story_trigger_response
+        );
         setStep(3); // 顯示角色
         setTimeout(() => navigate("/chat"), 3500);
       });
@@ -78,15 +87,19 @@ function StoryFlow() {
             exit="exit"
             className="bg-white p-6 rounded-xl shadow-xl max-w-lg w-full"
           >
-            <h2 className="text-xl font-bold text-indigo-800 mb-4">
-              {storyQuestions[step].question}
-            </h2>
+            <h2
+              className="text-sm font-normal text-indigo-800 mb-4 leading-relaxed"
+              dangerouslySetInnerHTML={{
+                __html: storyQuestions[step].question.replace(/\n/g, "<br/>"),
+              }}
+            />
+
             <div className="space-y-3">
               {storyQuestions[step].options.map((opt) => (
                 <button
                   key={opt.value}
                   onClick={() => handleSelect(opt.value)}
-                  className="block w-full px-4 py-3 rounded-lg bg-indigo-100 hover:bg-indigo-200 text-gray-700 text-left shadow"
+                  className="block w-full px-4 py-3 rounded-lg bg-indigo-100 hover:bg-indigo-200 text-gray-700 text-left shadow text-sm"
                 >
                   {opt.label}
                 </button>

@@ -13,22 +13,22 @@ export function classifyByStory(answers) {
 
   const mapping = {
     q1: {
-      comfort: ["D", "G"],
-      action: ["A", "B"],
-      listen: ["H", "C"],
-      fun: ["E", "F"],
+      comfort: ["E", "C"],
+      action: ["G", "D"],
+      listen: ["C", "A"],
+      fun: ["D", "B"],
     },
     q2: {
-      empathy: ["D"],
-      encourage: ["A", "B"],
-      analyze: ["H", "G"],
-      metaphor: ["E", "C"],
+      empathy: ["A", "E"],
+      encourage: ["G", "B"],
+      analyze: ["B", "F"],
+      metaphor: ["D", "H"],
     },
     q3: {
-      care: ["D", "E"],
-      power: ["A", "B", "F"],
-      clarity: ["H", "G"],
-      dream: ["C"],
+      care: ["H", "E", "F"],
+      power: ["H", "A", "G"],
+      clarity: ["C", "B", "A"],
+      dream: ["C", "D", "F"],
     },
   };
 
