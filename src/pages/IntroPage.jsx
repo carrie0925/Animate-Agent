@@ -8,7 +8,7 @@ function IntroPage() {
     <div className="min-h-screen bg-apricot flex flex-col items-center justify-center p-6 text-gray-800">
       <div className="flex flex-col items-center bg-white p-6 rounded-2xl shadow-xl w-full max-w-md mb-8 animate-fade-in">
         <div className="w-28 h-28 mb-4 rounded-full bg-indigo-100 flex items-center justify-center text-5xl shadow-inner">
-          🌟
+          <img src="./plant-icon.png" alt="Logo" className="w-16 h-16" />
         </div>
         <h1 className="text-3xl font-bold text-indigo-700 mb-1">
           歡迎來到縫補計畫
