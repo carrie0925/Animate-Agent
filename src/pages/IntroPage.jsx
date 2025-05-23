@@ -7,7 +7,7 @@ function IntroPage() {
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    fetch("/characters.json")
+    fetch(`${import.meta.env.BASE_URL}characters.json`)
       .then((res) => res.json())
       .then((data) => {
         setCharacters(data);
@@ -56,7 +56,7 @@ function IntroPage() {
               <div className="relative mb-3">
                 <div className="w-12 h-12 bg-gradient-to-br from-indigo-400 to-purple-500 rounded-lg flex items-center justify-center shadow-lg group-hover:rotate-12 transition-transform duration-300">
                   <img
-                    src="/plant-icon.png"
+                    src={`${import.meta.env.BASE_URL}plant-icon.png`}
                     alt="icon"
                     className="w-6 h-6 filter brightness-0 invert"
                   />
