@@ -58,7 +58,6 @@ function IntroPage() {
                   <img
                     src={`${import.meta.env.BASE_URL}plant-icon.png`}
                     alt="icon"
-                    className="w-6 h-6 filter brightness-0 invert"
                   />
                 </div>
                 <div className="absolute -top-1 -right-1 w-4 h-4 bg-pink-400 rounded-full opacity-80 group-hover:scale-110 transition-transform duration-300"></div>
