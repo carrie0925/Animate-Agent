@@ -154,16 +154,22 @@ yarn build
 ### 新增角色
 在 `public/characters.json` 中添加新角色配置：
 ```json
-{
-  "character_id": "I",
-  "name": "新角色名稱",
-  "avatar": "./assets/new-character.png",
-  "personality": "角色個性描述",
-  "tone": "說話語氣風格",
-  "dialogue_style": "對話互動方式",
-  "source": "作品來源",
-  "backstory": "角色背景故事"
-}
+ {
+    "character_id": "I",
+    "name": "角色名稱",
+    "avatar": "角色圖片",
+    "personality": "角色個性",
+    "tone": "角色說話語氣",
+    "dialogue_style": "角色對話風格",
+    "example_openings": ["建議的開頭文字"],
+    "sample_questions": ["建議的問題範例"],
+    "final_encouragement": "最後一段鼓勵語的核心概念",
+    "source": "角色作品",
+    "backstory": "角色故事背景",
+    "story_trigger_keywords": ["觸發角色講述自身故事的關鍵字"],
+    "story_trigger_response": "角色背景故事的有關回覆",
+    "story_summary": "作品故事描述"
+  }
 ```
 
 ### 修改測驗問題
