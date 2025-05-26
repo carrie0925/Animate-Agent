@@ -80,7 +80,7 @@ function ChatRoom() {
       const updatedWithFinal = [...updated, finalMessage];
       setMessages(updatedWithFinal);
       sessionStorage.setItem("chatMessages", JSON.stringify(updatedWithFinal));
-      setTimeout(() => navigate("/end"), 10000); // 延遲跳轉，給使用者閱讀時間
+      setTimeout(() => navigate("/end"), 8000); // 延遲跳轉，給使用者閱讀時間
     }
   };
 
