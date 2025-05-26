@@ -152,7 +152,7 @@ function FinalMessage() {
                       {/* 故事背景 */}
                       <div className="bg-white/80 rounded-lg p-3">
                         <h5 className="font-semibold text-gray-800 mb-2 text-sm">
-                          📖 故事情節
+                          📖 故事描述
                         </h5>
                         <p className="text-gray-700 leading-relaxed text-sm">
                           {character.story_summary}
