@@ -80,7 +80,7 @@ function ChatRoom() {
       const updatedWithFinal = [...updated, finalMessage];
       setMessages(updatedWithFinal);
       sessionStorage.setItem("chatMessages", JSON.stringify(updatedWithFinal));
-      setTimeout(() => navigate("/end"), 2000); // 延遲跳轉，給使用者閱讀時間
+      setTimeout(() => navigate("/end"), 5000); // 延遲跳轉，給使用者閱讀時間
     }
   };
 
@@ -90,41 +90,101 @@ function ChatRoom() {
   };
 
   return (
-    <div className="flex flex-col h-screen bg-gradient-to-b from-periwinkle to-tropical text-white overflow-hidden">
-      <div className="px-6 py-4 bg-white/90 shadow z-10">
-        <div className="flex items-center gap-4">
-          <img
-            src={characterAvatar || "/default-avatar.png"}
-            alt="角色頭像"
-            className="w-16 h-16 rounded-full border object-cover bg-white"
-          />
-          <div>
-            <h2 className="text-lg font-bold text-tropical">{characterName}</h2>
-            <p className="text-sm font-medium text-tropical">
-              {characterIntro}
-            </p>
-            <p className="text-sm text-gray-600 mt-1">
-              請直接輸入你最近的煩惱吧！你將有五次對話機會，{characterName}{" "}
-              會陪你到最後。
-            </p>
+    <div className="h-screen w-screen overflow-hidden relative">
+      {/* 與其他頁面一致的漸層背景 */}
+      <div className="absolute inset-0 bg-gradient-to-br from-orange-100 via-pink-50 to-purple-100"></div>
+
+      {/* 浮動裝飾元素 */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-16 left-8 w-20 h-20 bg-pink-200/15 rounded-full blur-xl animate-pulse"></div>
+        <div className="absolute top-32 right-16 w-16 h-16 bg-purple-200/15 rounded-full blur-lg animate-bounce"></div>
+        <div className="absolute bottom-24 left-1/4 w-12 h-12 bg-orange-200/20 rounded-full blur-md animate-pulse"></div>
+        <div className="absolute bottom-16 right-1/3 w-14 h-14 bg-pink-300/15 rounded-full blur-lg animate-bounce"></div>
+      </div>
+
+      <div className="relative z-10 flex flex-col h-screen text-gray-800">
+        {/* 角色信息頭部 */}
+        <div className="px-6 py-4 bg-white/90 backdrop-blur-sm shadow-lg border-b border-white/50">
+          <div className="flex items-center gap-4">
+            {/* 角色頭像 */}
+            <div className="group relative">
+              <div className="relative w-16 h-16 rounded-full bg-white/90 backdrop-blur-sm shadow-lg border border-white/50 overflow-hidden perspective transform hover:scale-105 transition-all duration-500">
+                <img
+                  src={characterAvatar || "/default-avatar.png"}
+                  alt="角色頭像"
+                  className="w-full h-full object-cover rounded-full group-hover:scale-110 transition-transform duration-700"
+                />
+                {/* 在線狀態指示器 */}
+                <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-green-400 rounded-full border-2 border-white shadow-sm animate-pulse"></div>
+              </div>
+              {/* 角色光環效果 */}
+              <div className="absolute -inset-1 bg-gradient-to-r from-tropical/30 via-periwinkle/30 to-pink-200/30 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10 blur-sm"></div>
+            </div>
+
+            {/* 角色信息 */}
+            <div className="flex-1 space-y-2">
+              <div className="flex items-center gap-2">
+                <h2 className="text-xl font-bold bg-gradient-to-r from-tropical to-periwinkle bg-clip-text text-transparent">
+                  {characterName}
+                </h2>
+                <div className="flex items-center gap-1 px-2 py-0.5 bg-green-50 rounded-full border border-green-200">
+                  <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
+                  <span className="text-xs text-gray-600">在線</span>
+                </div>
+              </div>
+
+              <p className="text-sm font-medium text-gray-700 leading-relaxed">
+                {characterIntro}
+              </p>
+
+              <div className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg p-3 border-l-4 border-periwinkle">
+                <p className="text-xs text-gray-600 leading-relaxed">
+                  💭 請直接輸入你最近的煩惱吧！你將有五次對話機會，
+                  {characterName} 會陪你到最後。
+                </p>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* trigger buttons 條件顯示 */}
-      {messages.length === 0 && (
-        <StoryTriggerButtons
-          keywords={storyKeywords}
-          onTrigger={handleStoryTrigger}
-        />
-      )}
+        {/* 故事觸發按鈕 - 條件顯示 */}
+        {messages.length === 0 && (
+          <div className="px-4 py-2">
+            <StoryTriggerButtons
+              keywords={storyKeywords}
+              onTrigger={handleStoryTrigger}
+            />
+          </div>
+        )}
 
-      <div className="flex-1 overflow-hidden flex flex-col">
-        <DialogueBox messages={messages} onSend={handleUserMessage} />
-      </div>
+        {/* 對話區域 */}
+        <div className="flex-1 overflow-hidden flex flex-col">
+          <DialogueBox messages={messages} onSend={handleUserMessage} />
+        </div>
 
-      <div className="px-6 pb-4">
-        <ProgressBar step={step} total={totalSteps} />
+        {/* 進度條區域 */}
+        <div className="px-6 pb-4">
+          <div className="bg-white/80 backdrop-blur-sm rounded-xl p-4 shadow-lg border border-white/50">
+            {/* 進度指示文字 */}
+            <div className="flex items-center justify-between mb-2 px-2">
+              <span className="text-xs text-gray-600">對話進度</span>
+              <span className="text-xs text-tropical font-medium">
+                {step}/{totalSteps} 輪
+              </span>
+            </div>
+
+            <ProgressBar step={step} total={totalSteps} />
+
+            {/* 剩餘對話提示 */}
+            {step <= totalSteps && (
+              <div className="flex items-center justify-center mt-2">
+                <span className="text-xs text-gray-500">
+                  還有 {totalSteps - step + 1} 次對話機會
+                </span>
+              </div>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );

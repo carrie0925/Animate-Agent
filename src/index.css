@@ -72,6 +72,247 @@
   .shadow-3xl {
     box-shadow: 0 35px 60px -12px rgba(0, 0, 0, 0.25);
   }
+
+  /* StoryFlow 專用樣式 */
+  .story-background {
+    @apply h-screen w-screen overflow-hidden relative;
+  }
+
+  .story-gradient-bg {
+    @apply absolute inset-0 bg-gradient-to-br from-orange-100 via-pink-50 to-purple-100;
+  }
+
+  .story-float-decorations {
+    @apply absolute inset-0 overflow-hidden pointer-events-none;
+  }
+
+  .story-container {
+    @apply relative z-10 h-screen flex flex-col items-center justify-center p-4;
+  }
+
+  .story-main-wrapper {
+    @apply w-[95vw] max-w-[900px] h-[90vh] max-h-[700px] transition-all duration-1000;
+  }
+
+  .story-opening-card {
+    @apply flex flex-col items-center justify-center py-6 px-8 text-center w-full max-w-lg transform hover:scale-105 transition-all duration-500 animate-fade-in overflow-hidden;
+    animation-delay: 400ms;
+  }
+
+  .story-icon-container {
+    @apply relative mb-4;
+  }
+
+  .story-icon {
+    @apply w-16 h-16 bg-gradient-to-br from-tropical to-periwinkle rounded-lg flex items-center justify-center shadow-lg hover:rotate-12 transition-transform duration-300;
+  }
+
+  .story-icon-dot {
+    @apply absolute -top-1 -right-1 w-4 h-4 bg-pink-400 rounded-full opacity-80 hover:scale-110 transition-transform duration-300;
+  }
+
+  .story-title {
+    @apply text-2xl lg:text-3xl font-bold bg-gradient-to-r from-tropical to-periwinkle bg-clip-text text-transparent mb-4 leading-tight;
+  }
+
+  .story-intro-box {
+    @apply bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg p-4 mb-6 border-l-4 border-periwinkle w-full max-w-lg;
+  }
+
+  .story-question-card {
+    @apply w-full max-w-2xl bg-white/90 backdrop-blur-sm shadow-lg hover:shadow-xl rounded-xl p-8 border border-white/50 relative overflow-hidden;
+  }
+
+  .story-progress-bar {
+    @apply absolute top-0 left-0 right-0 h-1 bg-gray-100 rounded-t-xl;
+  }
+
+  .story-progress-fill {
+    @apply h-full bg-gradient-to-r from-tropical to-periwinkle transition-all duration-500 ease-out rounded-tl-xl;
+  }
+
+  .story-question-header {
+    @apply mb-8 mt-2;
+  }
+
+  .story-question-number {
+    @apply flex items-center gap-3 mb-6;
+  }
+
+  .story-number-badge {
+    @apply w-10 h-10 bg-gradient-to-br from-tropical to-periwinkle rounded-lg flex items-center justify-center shadow-md;
+  }
+
+  .story-number-divider {
+    @apply w-8 h-0.5 bg-gradient-to-r from-tropical to-periwinkle mt-1;
+  }
+
+  .story-question-text {
+    @apply text-lg font-medium text-gray-800 leading-relaxed;
+  }
+
+  .story-option-button {
+    @apply block w-full px-6 py-4 rounded-lg bg-white/90 backdrop-blur-sm shadow-lg hover:shadow-xl border border-white/50 text-gray-700 text-left transition-all duration-300 transform hover:scale-105 active:scale-95 perspective;
+  }
+
+  .story-option-content {
+    @apply flex items-start gap-4;
+  }
+
+  .story-option-dot {
+    @apply w-6 h-6 rounded-full bg-gradient-to-r from-tropical to-periwinkle flex items-center justify-center mt-0.5 shadow-sm hover:scale-110 transition-transform duration-300;
+  }
+
+  .story-option-text {
+    @apply text-base font-medium leading-relaxed flex-1;
+  }
+
+  .story-option-glow {
+    @apply absolute -inset-0.5 bg-gradient-to-r from-tropical/20 via-periwinkle/20 to-pink-200/20 rounded-xl opacity-0 hover:opacity-100 transition-opacity duration-500 -z-10 blur-sm;
+  }
+
+  .story-loading-card {
+    @apply bg-white/90 backdrop-blur-sm shadow-lg rounded-xl p-12 text-center border border-white/50 max-w-md;
+  }
+
+  .story-loading-spinner {
+    @apply relative mb-6;
+  }
+
+  .story-spinner-primary {
+    @apply w-16 h-16 border-4 border-gray-200 border-t-tropical rounded-full animate-spin mx-auto;
+  }
+
+  .story-spinner-secondary {
+    @apply absolute inset-0 w-16 h-16 border-4 border-transparent border-t-periwinkle rounded-full animate-spin mx-auto;
+    animation-delay: 0.15s;
+    animation-direction: reverse;
+  }
+
+  .story-loading-dots {
+    @apply flex items-center justify-center gap-1 mt-4;
+  }
+
+  .story-result-card {
+    @apply bg-white/90 backdrop-blur-sm shadow-lg hover:shadow-xl rounded-xl p-8 text-center border border-white/50 max-w-md transform hover:scale-105 transition-all duration-500 animate-fade-in relative overflow-hidden;
+    animation-delay: 200ms;
+  }
+
+  .story-success-bar {
+    @apply absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-tropical via-periwinkle to-pink-400 rounded-t-xl;
+  }
+
+  .story-character-avatar {
+    @apply relative w-32 h-32 mx-auto animate-bounce-in;
+  }
+
+  .story-avatar-container {
+    @apply relative w-full h-full rounded-full bg-white/90 backdrop-blur-sm shadow-lg hover:shadow-xl perspective transform hover:scale-105 transition-all duration-500 overflow-hidden border border-white/50;
+  }
+
+  .story-avatar-image {
+    @apply w-full h-full object-cover rounded-full hover:scale-110 transition-transform duration-700;
+  }
+
+  .story-avatar-overlay {
+    @apply absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent rounded-full opacity-0 hover:opacity-100 transition-opacity duration-300;
+  }
+
+  .story-avatar-glow {
+    @apply absolute -inset-0.5 bg-gradient-to-r from-tropical/30 via-periwinkle/30 to-pink-200/30 rounded-full opacity-0 hover:opacity-100 transition-opacity duration-500 -z-10 blur-sm animate-pulse-slow;
+  }
+
+  .story-character-name {
+    @apply text-xl lg:text-2xl font-bold bg-gradient-to-r from-tropical to-periwinkle bg-clip-text text-transparent leading-tight;
+  }
+
+  .story-enter-hint {
+    @apply bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg p-4 border-l-4 border-periwinkle;
+  }
+
+  .story-enter-dots {
+    @apply flex items-center justify-center gap-2 text-sm text-gray-500;
+  }
+
+  /* 動畫延遲工具類 */
+  .delay-100 {
+    animation-delay: 0.1s;
+  }
+  .delay-200 {
+    animation-delay: 0.2s;
+  }
+  .delay-300 {
+    animation-delay: 0.3s;
+  }
+
+  /* ChatRoom 專用樣式 */
+  .chat-background {
+    @apply h-screen w-screen overflow-hidden relative;
+  }
+
+  .chat-header {
+    @apply px-6 py-4 bg-white/90 backdrop-blur-sm shadow-lg border-b border-white/50 relative;
+  }
+
+  .chat-header-content {
+    @apply flex items-center gap-4;
+  }
+
+  .chat-avatar-container {
+    @apply relative;
+  }
+
+  .chat-avatar-wrapper {
+    @apply relative w-16 h-16 rounded-full bg-white/90 backdrop-blur-sm shadow-lg border border-white/50 overflow-hidden perspective transform hover:scale-105 transition-all duration-500;
+  }
+
+  .chat-avatar-image {
+    @apply w-full h-full object-cover rounded-full transition-transform duration-700;
+  }
+
+  .chat-online-indicator {
+    @apply absolute -bottom-1 -right-1 w-5 h-5 bg-green-400 rounded-full border-2 border-white shadow-sm animate-pulse;
+  }
+
+  .chat-avatar-glow {
+    @apply absolute -inset-1 bg-gradient-to-r from-tropical/30 via-periwinkle/30 to-pink-200/30 rounded-full opacity-0 transition-opacity duration-500 -z-10 blur-sm;
+  }
+
+  .chat-character-info {
+    @apply flex-1 space-y-2;
+  }
+
+  .chat-character-name {
+    @apply text-xl font-bold bg-gradient-to-r from-tropical to-periwinkle bg-clip-text text-transparent;
+  }
+
+  .chat-status-badge {
+    @apply flex items-center gap-1 px-2 py-0.5 bg-green-50 rounded-full border border-green-200;
+  }
+
+  .chat-character-intro {
+    @apply text-sm font-medium text-gray-700 leading-relaxed;
+  }
+
+  .chat-instruction-box {
+    @apply bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg p-3 border-l-4 border-periwinkle;
+  }
+
+  .chat-trigger-section {
+    @apply px-4 py-2;
+  }
+
+  .chat-dialogue-container {
+    @apply flex-1 overflow-hidden flex flex-col;
+  }
+
+  .chat-progress-section {
+    @apply px-6 pb-4;
+  }
+
+  .chat-progress-wrapper {
+    @apply bg-white/80 backdrop-blur-sm rounded-xl p-4 shadow-lg border border-white/50;
+  }
 }
 
 /* 卡片翻轉動畫 */
