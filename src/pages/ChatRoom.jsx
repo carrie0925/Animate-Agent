@@ -33,6 +33,12 @@ function ChatRoom() {
   }, [characterId, characterName, navigate]);
 
   const handleUserMessage = async (userInput, customPrompt = null) => {
+    // Debug: 檢查 API key 狀態
+    console.log("=== API Key Debug ===");
+    console.log("Environment API Key:", import.meta.env.VITE_OPENAI_API_KEY);
+    console.log("SessionStorage API Key:", sessionStorage.getItem("openaiKey"));
+    console.log("Environment Keys:", Object.keys(import.meta.env));
+
     const round = step;
     const backstory =
       sessionStorage.getItem("character_backstory")?.split("。") || [];
@@ -53,17 +59,26 @@ function ChatRoom() {
 
     // 檢查並設定 API key
     let apiKey = sessionStorage.getItem("openaiKey");
+    console.log("Initial apiKey from sessionStorage:", apiKey);
+
     if (!apiKey) {
       // 嘗試從環境變數重新取得
       const envKey = import.meta.env.VITE_OPENAI_API_KEY;
+      console.log("Trying to get from environment:", envKey);
+
       if (envKey) {
         sessionStorage.setItem("openaiKey", envKey);
         apiKey = envKey;
+        console.log("Successfully set API key from environment");
       } else {
+        console.log("No API key found in environment, showing alert");
         alert("請先設定 OpenAI API 金鑰！");
         return;
       }
     }
+
+    console.log("Final apiKey:", apiKey ? "存在" : "不存在");
+    console.log("=====================");
 
     // 用完整提示語送出至 OpenAI 生成回應（包含風格與參考故事）
     const newMessages = [...messages, { role: "user", content: prompt }];
