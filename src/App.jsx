@@ -5,8 +5,9 @@ import IntroPage from "./pages/IntroPage";
 import StoryFlow from "./pages/StoryFlow";
 import ChatRoom from "./pages/ChatRoom";
 import FinalMessage from "./pages/FinalMessage";
+import { StoryGuard, ChatGuard, FinalGuard } from "./components/RouteGuard";
 
-// 在模組載入時就設定 API key，而非等到 useEffect
+// 在模組載入時就設定 API key
 const envKey = import.meta.env.VITE_OPENAI_API_KEY;
 if (envKey && typeof window !== "undefined") {
   sessionStorage.setItem("openaiKey", envKey);
@@ -25,9 +26,30 @@ function App() {
     <HashRouter>
       <Routes>
         <Route path="/" element={<IntroPage />} />
-        <Route path="/story" element={<StoryFlow />} />
-        <Route path="/chat" element={<ChatRoom />} />
-        <Route path="/end" element={<FinalMessage />} />
+        <Route
+          path="/story"
+          element={
+            <StoryGuard>
+              <StoryFlow />
+            </StoryGuard>
+          }
+        />
+        <Route
+          path="/chat"
+          element={
+            <ChatGuard>
+              <ChatRoom />
+            </ChatGuard>
+          }
+        />
+        <Route
+          path="/end"
+          element={
+            <FinalGuard>
+              <FinalMessage />
+            </FinalGuard>
+          }
+        />
       </Routes>
     </HashRouter>
   );

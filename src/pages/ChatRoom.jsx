@@ -51,10 +51,18 @@ function ChatRoom() {
     // 顯示給使用者的訊息（user bubble）
     setMessages((prev) => [...prev, { role: "user", content: userInput }]);
 
-    const apiKey = sessionStorage.getItem("openaiKey");
+    // 檢查並設定 API key
+    let apiKey = sessionStorage.getItem("openaiKey");
     if (!apiKey) {
-      alert("請先設定 OpenAI API 金鑰！");
-      return;
+      // 嘗試從環境變數重新取得
+      const envKey = import.meta.env.VITE_OPENAI_API_KEY;
+      if (envKey) {
+        sessionStorage.setItem("openaiKey", envKey);
+        apiKey = envKey;
+      } else {
+        alert("請先設定 OpenAI API 金鑰！");
+        return;
+      }
     }
 
     // 用完整提示語送出至 OpenAI 生成回應（包含風格與參考故事）
@@ -84,7 +92,7 @@ function ChatRoom() {
           role: "assistant",
           content:
             sessionStorage.getItem("character_final_encouragement") ||
-            "謝謝你願意分享，我想要送你一個小禮物......",
+            "謝謝你願意分享，記住你一直都不是孤單的，我會一直陪著你。",
         };
         const updatedWithFinal = [...updated, finalMessage];
         setMessages(updatedWithFinal);

@@ -14,6 +14,8 @@ function IntroPage() {
         setTimeout(() => setIsLoaded(true), 100);
       })
       .catch((err) => console.error("載入角色資料失敗", err));
+
+    sessionStorage.setItem("visited_intro", "true");
   }, []);
 
   // const gridItems =

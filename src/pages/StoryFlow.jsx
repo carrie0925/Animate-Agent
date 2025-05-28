@@ -51,6 +51,9 @@ function StoryFlow() {
     const updated = [...answers, value];
     setAnswers(updated);
 
+    // 保存用戶答案到 sessionStorage（用於路由守衛）
+    sessionStorage.setItem("user_answers", JSON.stringify(updated));
+
     if (updated.length === 3) {
       setIsLoading(true);
       const charId = classifyByStory(updated);
