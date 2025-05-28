@@ -1,17 +1,41 @@
 import { useEffect, useRef, useState } from "react";
 
-function DialogueBox({ messages, onSend }) {
+function DialogueBox({ messages, onSend, isTyping, characterName }) {
   const [input, setInput] = useState("");
+  const [isComposing, setIsComposing] = useState(false); // 追蹤輸入法組字狀態
+  const [isSending, setIsSending] = useState(false); // 防止重複送出
   const bottomRef = useRef(null);
 
-  const handleSend = () => {
-    if (input.trim() === "") return;
-    onSend(input.trim());
+  const handleSend = async () => {
+    if (input.trim() === "" || isSending) return;
+
+    setIsSending(true); // 防止重複送出
+    const message = input.trim();
     setInput("");
+
+    try {
+      await onSend(message);
+    } finally {
+      setIsSending(false);
+    }
   };
 
   const handleKeyDown = (e) => {
-    if (e.key === "Enter") handleSend();
+    // 只有在沒有組字狀態且按下Enter時才送出
+    if (e.key === "Enter" && !isComposing && !e.shiftKey) {
+      e.preventDefault(); // 防止換行
+      handleSend();
+    }
+  };
+
+  // 處理輸入法組字開始
+  const handleCompositionStart = () => {
+    setIsComposing(true);
+  };
+
+  // 處理輸入法組字結束
+  const handleCompositionEnd = () => {
+    setIsComposing(false);
   };
 
   useEffect(() => {
@@ -41,6 +65,25 @@ function DialogueBox({ messages, onSend }) {
             </div>
           </div>
         ))}
+
+        {/* 打字指示器 */}
+        {isTyping && (
+          <div className="flex w-full justify-start">
+            <div className="max-w-[60%] px-4 py-3 rounded-2xl rounded-bl-none bg-gradient-to-r from-tropical/70 to-periwinkle/70 backdrop-blur-sm border border-white/30 shadow-lg">
+              <div className="flex items-center gap-2">
+                <span className="text-white/90 text-sm">
+                  {characterName || "角色"} 正在輸入
+                </span>
+                <div className="flex gap-1">
+                  <div className="w-2 h-2 bg-white/80 rounded-full animate-bounce"></div>
+                  <div className="w-2 h-2 bg-white/80 rounded-full animate-bounce delay-100"></div>
+                  <div className="w-2 h-2 bg-white/80 rounded-full animate-bounce delay-200"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
         <div ref={bottomRef} />
       </div>
 
@@ -53,14 +96,17 @@ function DialogueBox({ messages, onSend }) {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
+            onCompositionStart={handleCompositionStart}
+            onCompositionEnd={handleCompositionEnd}
+            disabled={isSending}
           />
         </div>
         <button
           onClick={handleSend}
-          disabled={!input.trim()}
+          disabled={!input.trim() || isSending}
           className="px-8 py-3 bg-tropical text-white rounded-xl hover:bg-tropical/90 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 transform hover:scale-105 active:scale-95 shadow-xl font-bold text-lg"
         >
-          送出
+          {isSending ? "送出中..." : "送出"}
         </button>
       </div>
     </div>

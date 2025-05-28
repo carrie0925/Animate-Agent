@@ -8,6 +8,8 @@ import { fetchCharacterReply } from "../utils/chatAPI";
 function ChatRoom() {
   const [messages, setMessages] = useState([]);
   const [step, setStep] = useState(1);
+  const [isTyping, setIsTyping] = useState(false); // 新增：打字狀態
+  const [showFinalHint, setShowFinalHint] = useState(false); // 新增：顯示最終提示
   const totalSteps = 5;
   const navigate = useNavigate();
 
@@ -70,17 +72,33 @@ function ChatRoom() {
     if (step < totalSteps) {
       setStep(step + 1);
     } else {
-      // 🟣 第五輪之後，自動補上角色總結語
-      const finalMessage = {
-        role: "assistant",
-        content:
-          sessionStorage.getItem("character_final_encouragement") ||
-          "謝謝你願意分享，記住你一直都不是孤單的，我會一直陪著你。",
-      };
-      const updatedWithFinal = [...updated, finalMessage];
-      setMessages(updatedWithFinal);
-      sessionStorage.setItem("chatMessages", JSON.stringify(updatedWithFinal));
-      setTimeout(() => navigate("/end"), 8000); // 延遲跳轉，給使用者閱讀時間
+      // 🟣 第五輪之後，先增加步數，然後顯示打字提示再補上角色總結語
+      setStep(step + 1); // 先設為6，避免進度條顯示錯誤
+      setIsTyping(true); // 開始顯示打字動畫
+
+      // 延遲3秒後顯示總結語
+      setTimeout(() => {
+        setIsTyping(false); // 停止打字動畫
+
+        const finalMessage = {
+          role: "assistant",
+          content:
+            sessionStorage.getItem("character_final_encouragement") ||
+            "謝謝你願意分享，我想要送你一個小禮物......",
+        };
+        const updatedWithFinal = [...updated, finalMessage];
+        setMessages(updatedWithFinal);
+        sessionStorage.setItem(
+          "chatMessages",
+          JSON.stringify(updatedWithFinal)
+        );
+
+        // 顯示最終提示（閃爍動畫）
+        setShowFinalHint(true);
+
+        // 再延遲6秒後跳轉，給使用者閱讀總結語的時間
+        setTimeout(() => navigate("/end"), 6000);
+      }, 3000);
     }
   };
 
@@ -114,8 +132,14 @@ function ChatRoom() {
                   alt="角色頭像"
                   className="w-full h-full object-cover rounded-full group-hover:scale-110 transition-transform duration-700"
                 />
-                {/* 在線狀態指示器 */}
-                <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-green-400 rounded-full border-2 border-white shadow-sm animate-pulse"></div>
+                {/* 在線狀態指示器 - 根據打字狀態變化 */}
+                <div
+                  className={`absolute -bottom-1 -right-1 w-5 h-5 rounded-full border-2 border-white shadow-sm transition-colors duration-300 ${
+                    isTyping
+                      ? "bg-yellow-400 animate-pulse"
+                      : "bg-green-400 animate-pulse"
+                  }`}
+                ></div>
               </div>
               {/* 角色光環效果 */}
               <div className="absolute -inset-1 bg-gradient-to-r from-tropical/30 via-periwinkle/30 to-pink-200/30 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10 blur-sm"></div>
@@ -127,9 +151,22 @@ function ChatRoom() {
                 <h2 className="text-xl font-bold bg-gradient-to-r from-tropical to-periwinkle bg-clip-text text-transparent">
                   {characterName}
                 </h2>
-                <div className="flex items-center gap-1 px-2 py-0.5 bg-green-50 rounded-full border border-green-200">
-                  <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
-                  <span className="text-xs text-gray-600">在線</span>
+                {/* 狀態指示器 - 根據打字狀態顯示不同文字 */}
+                <div
+                  className={`flex items-center gap-1 px-2 py-0.5 rounded-full border transition-colors duration-300 ${
+                    isTyping
+                      ? "bg-yellow-50 border-yellow-200"
+                      : "bg-green-50 border-green-200"
+                  }`}
+                >
+                  <span
+                    className={`w-2 h-2 rounded-full animate-pulse ${
+                      isTyping ? "bg-yellow-400" : "bg-green-400"
+                    }`}
+                  ></span>
+                  <span className="text-xs text-gray-600">
+                    {isTyping ? "正在輸入..." : "在線"}
+                  </span>
                 </div>
               </div>
 
@@ -159,7 +196,12 @@ function ChatRoom() {
 
         {/* 對話區域 */}
         <div className="flex-1 overflow-hidden flex flex-col">
-          <DialogueBox messages={messages} onSend={handleUserMessage} />
+          <DialogueBox
+            messages={messages}
+            onSend={handleUserMessage}
+            isTyping={isTyping} // 傳遞打字狀態給 DialogueBox
+            characterName={characterName} // 傳遞角色名稱
+          />
         </div>
 
         {/* 進度條區域 */}
@@ -176,11 +218,40 @@ function ChatRoom() {
             <ProgressBar step={step} total={totalSteps} />
 
             {/* 剩餘對話提示 */}
-            {step <= totalSteps && (
+            {step <= totalSteps && !isTyping && !showFinalHint && (
               <div className="flex items-center justify-center mt-2">
                 <span className="text-xs text-gray-500">
                   還有 {totalSteps - step + 1} 次對話機會
                 </span>
+              </div>
+            )}
+
+            {/* 打字狀態提示 - 更顯眼的位置和樣式 */}
+            {isTyping && (
+              <div className="flex items-center justify-center mt-3 px-4 py-2 bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg border border-yellow-200">
+                <div className="flex items-center gap-2">
+                  <div className="flex gap-1">
+                    <div className="w-2 h-2 bg-yellow-400 rounded-full animate-bounce"></div>
+                    <div className="w-2 h-2 bg-yellow-400 rounded-full animate-bounce delay-100"></div>
+                    <div className="w-2 h-2 bg-yellow-400 rounded-full animate-bounce delay-200"></div>
+                  </div>
+                  <span className="text-sm text-yellow-700 font-medium animate-pulse">
+                    {characterName} 正在輸入中...
+                  </span>
+                </div>
+              </div>
+            )}
+
+            {/* 最終提示 - 閃爍動畫強調 */}
+            {showFinalHint && (
+              <div className="flex items-center justify-center mt-3 px-4 py-2 bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg border border-purple-200">
+                <div className="flex items-center gap-2">
+                  <span className="text-2xl animate-bounce">✨</span>
+                  <span className="text-sm text-purple-700 font-medium animate-pulse">
+                    {characterName} 還有話想跟你說...
+                  </span>
+                  <span className="text-2xl animate-bounce delay-300">💫</span>
+                </div>
               </div>
             )}
           </div>
